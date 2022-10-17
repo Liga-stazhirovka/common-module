@@ -83,6 +83,7 @@
                 <version>${springboot.test.version}</version>
                 <scope>test</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>
