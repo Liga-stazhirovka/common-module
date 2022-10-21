@@ -5,12 +5,17 @@
 
     <groupId>liga.medical</groupId>
     <artifactId>common</artifactId>
-    <packaging>pom</packaging>
-
     <version>0.0.1-SNAPSHOT</version>
-
     <name>common-medical</name>
     <description>Общая библиотека для проекта мед. мониторинга</description>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.0.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
     <modules>
         <module>build-tools</module>
@@ -44,6 +49,7 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <spring.context.version>5.2.22.RELEASE</spring.context.version>
+        <surefire-junit4.version>2.22.2</surefire-junit4.version>
     </properties>
 
     <dependencyManagement>
@@ -123,9 +129,9 @@
 
         <plugins>
             <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>${maven.compiler.plugin}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
