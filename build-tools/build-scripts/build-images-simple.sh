@@ -42,11 +42,11 @@ function pull_or_clone_proj() {
  if cd ${SERVICE_NAME}
   then
  #  git branch -f master origin/master
-   git checkout master
+   git checkout dev
    git pull
    cd ..
   else
-    git clone --branch master ${SERVICE_URL} ${SERVICE_NAME}
+    git clone --branch dev ${SERVICE_URL} ${SERVICE_NAME}
  fi
 }
 
@@ -54,10 +54,10 @@ function pull_or_clone_proj() {
 cd ..
 
 # Clone or update projects
-pull_or_clone_proj common-module https://github.com/orgs/Liga-stazhirovka/repositories/common-module.git
-pull_or_clone_proj medical-monitoring https://github.com/orgs/Liga-stazhirovka/repositories/medical-monitoring.git
-pull_or_clone_proj message-analyzer https://github.com/orgs/Liga-stazhirovka/repositories/message-analyzer.git
-pull_or_clone_proj person-service https://github.com/orgs/Liga-stazhirovka/repositories/person-service.git
+pull_or_clone_proj common-module https://github.com/Liga-stazhirovka/common-module
+pull_or_clone_proj medical-monitoring https://github.com/Liga-stazhirovka/medical-monitoring
+pull_or_clone_proj message-analyzer https://github.com/Liga-stazhirovka/message-analyzer
+pull_or_clone_proj person-service https://github.com/Liga-stazhirovka/person-service
 
 build_lib common-module
 build_jar medical-monitoring message-analyzer person-service
@@ -66,6 +66,6 @@ build_jar medical-monitoring message-analyzer person-service
 APP_VERSION=0.0.1-SNAPSHOT
 
 echo "Building Docker images"
-build_basic_images ./medical-monitoring/core/target/medical-monitoring-${APP_VERSION}.jar application/medical-monitoring
-build_basic_images ./message-analyzer/core/target/message-analyzer-${APP_VERSION}.jar application/message-analyzer
-build_basic_images ./person-service/core/target/person-service-${APP_VERSION}.jar application/person-service
+build_basic_images ./medical-monitoring/core/target/medical-monitoring-core-${APP_VERSION}.jar application/medical-monitoring
+build_basic_images ./message-analyzer/core/target/message-analyzer-core-${APP_VERSION}.jar application/message-analyzer
+build_basic_images ./person-service/core/target/person-service-core-${APP_VERSION}.jar application/person-service
