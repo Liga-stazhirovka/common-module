@@ -2,72 +2,69 @@ version: '2.4'
 
 services:
   rabbitmq:
-    image: rabbitmq:3-management-alpine
+    restart: always
+    image: rabbitmq:3.10-management
     container_name: 'rabbitmq'
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 3s
-      timeout: 3s
-      retries: 1
+      interval: 30s
+      timeout: 30s
+      retries: 3
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
-    restart: always
-
 
   message-analyzer:
+    restart: always
     image: application/message-analyzer:simple
     depends_on:
       rabbitmq:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
-      interval: 2s
-      timeout: 1s
-      retries: 1
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 20s
+      timeout: 10s
+      retries: 3
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - 8081:8080
-    restart: always
-
 
   medical-monitoring:
+    restart: always
     image: application/medical-monitoring:simple
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       message-analyzer:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8082/actuator/health" ]
-      interval: 2s
-      timeout: 1s
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 20s
+      timeout: 10s
       retries: 3
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
-
     ports:
       - 8082:8080
-    restart: always
-
 
   person-service:
+    restart: always
     image: application/person-service:simple
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       message-analyzer:
         condition: service_healthy
       medical-monitoring:
         condition: service_healthy
-
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8083/actuator/health" ]
-      interval: 2s
-      timeout: 1s
-      retries: 1
-    environment:
-      SERVER_PORT: 8080
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 20s
+      timeout: 10s
+      retries: 3
     ports:
       - 8083:8080
-    restart: always
