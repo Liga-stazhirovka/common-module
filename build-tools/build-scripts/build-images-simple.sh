@@ -7,7 +7,7 @@ function build_basic_images() {
   docker build -f ./build-scripts/docker/basic/Dockerfile \
     --build-arg JAR_FILE=${JAR_FILE} \
     -t ${APP_NAME}:latest
-#    -t ${APP_NAME}:simple .
+    -t ${APP_NAME}:simple .
 }
 
 function build_jar() {
